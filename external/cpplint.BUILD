@@ -6,9 +6,9 @@ licenses(["notice"])
 # sandbox gets confused.  We'll give it a private name with a public alias.
 py_binary(
     name = "cpplint_binary",
-    srcs = ["cpplint/cpplint.py"],
+    srcs = ["cpplint.py"],
     imports = ["cpplint"],
-    main = "cpplint/cpplint.py",
+    main = "cpplint.py",
     visibility = [],
 )
 
@@ -20,8 +20,8 @@ alias(
 py_test(
     name = "cpplint_unittest",
     size = "small",
-    srcs = ["cpplint/cpplint_unittest.py"],
-    data = ["cpplint/cpplint_test_header.h"],
+    srcs = ["cpplint_unittest.py"],
+    data = ["cpplint_test_header.h"],
     deps = [
         ":cpplint_py",
     ],

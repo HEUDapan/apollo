@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ###############################################################################
-# Copyright 2019 The Apollo Authors. All Rights Reserved.
+# Copyright 2020 The Apollo Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,25 +16,24 @@
 # limitations under the License.
 ###############################################################################
 
+# Fail on first error.
 set -e
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-#apt-get -y update && \
-#    apt-get -y install --no-install-recommends \
-#    libasio-dev
-# asio tinyxml2
-git clone --single-branch --branch apollo --depth 1 https://github.com/ApolloAuto/Fast-RTPS.git
-pushd Fast-RTPS
-git submodule init
-git submodule update
+apt-get -y update && \
+    apt-get -y install \
+    libpocofoundation50 \
+    libpoco-dev \
+    ncurses-dev \
+    uuid-dev \
+    libboost-all-dev \
+    libxml2-dev
 
-mkdir -p build && cd build
-cmake -DEPROSIMA_BUILD=ON -DCMAKE_INSTALL_PREFIX=/usr/local/fast-rtps ../
+python3 -m pip install --no-cache-dir grpcio-tools
+pip2 install --no-cache-dir grpcio-tools
 
-make -j`nproc` fastrtps
-make install
+# clean up
+apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-popd
-
-rm -fr Fast-RTPS

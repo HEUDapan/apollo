@@ -21,14 +21,22 @@ set -e
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-wget https://github.com/google/protobuf/releases/download/v3.3.0/protobuf-cpp-3.3.0.tar.gz
-tar xzf protobuf-cpp-3.3.0.tar.gz
+VERSION=3.11.4
 
-pushd protobuf-3.3.0
+wget https://github.com/protocolbuffers/protobuf/releases/download/v${VERSION}/protobuf-cpp-${VERSION}.tar.gz
+#https://github.com/protocolbuffers/protobuf/releases/download/v3.11.4/protobuf-cpp-3.11.4.tar.gz
+
+tar xzf protobuf-cpp-${VERSION}.tar.gz
+
+pushd protobuf-${VERSION}
+
+#cd cmake/build
+#cmake .. -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr
+
 ./configure --prefix=/usr
-make -j8
+make -j`nproc`
 make install
 popd
 
 # Clean up.
-rm -fr protobuf-cpp-3.3.0.tar.gz protobuf-3.3.0
+rm -fr protobuf-cpp-${VERSION}.tar.gz protobuf-${VERSION}

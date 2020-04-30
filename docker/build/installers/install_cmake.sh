@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ###############################################################################
-# Copyright 2019 The Apollo Authors. All Rights Reserved.
+# Copyright 2020 The Apollo Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,12 +19,24 @@
 # Fail on first error.
 set -e
 
-REPO="https://github.com/google/styleguide.git"
-COMMIT="159b4c81bbca97a9ca00f1195a37174388398a67"
-DIR="/home/tmp/google_styleguide"
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
-git clone "${REPO}" "${DIR}"
-pushd "${DIR}"
-git reset --hard "${COMMIT}"
-rm -fr .git
-popd
+. /tmp/installers/installer_base.sh
+
+#cmake-3.16.6-Linux-x86_64.sh
+# Install CMake
+VERSION=3.16.6
+CMAKE_SH=cmake-${VERSION}-Linux-x86_64.sh
+SHA256SUM=a55cb6a860b81e6c65d78d12ea6214da6dce5019278b1f66c56cc5fcfbd62d78
+DOWLOAD_LINK=https://github.com/Kitware/CMake/releases/download/v${VERSION}/${CMAKE_SH}
+
+download_if_not_cached $CMAKE_SH $SHA256SUM $DOWLOAD_LINK
+
+chmod a+x ${CMAKE_SH}
+mkdir -p /opt/cmake
+
+./${CMAKE_SH} --skip-license --prefix=/opt/cmake
+ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
+
+# Clean up.
+rm -fr ${CMAKE_SH}

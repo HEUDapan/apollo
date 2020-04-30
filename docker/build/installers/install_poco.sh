@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ###############################################################################
-# Copyright 2019 The Apollo Authors. All Rights Reserved.
+# Copyright 2020 The Apollo Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,11 +21,10 @@ set -e
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-# Ubuntu 14.04 has poco package version 1.3.6
-# if a higher version is required, the below
-# will install from source
 apt-get -y update && \
-    apt-get -y install poco
+    apt-get -y install \
+    libpocofoundation50 \
+    libpoco-dev
 
 # Install from source
 #VERSION=1.9.0
